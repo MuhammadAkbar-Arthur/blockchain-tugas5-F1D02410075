@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DApp Sewa Alat Escrow</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header>
+        <p class="eyebrow">
+          Praktikum Blockchain • Bab 13 Solidity + Remix + MetaMask
+        </p>
+        <h1>Sewa Alat Escrow DApp</h1>
+        <p>
+          Frontend ini membaca katalog dan mengelola transaksi smart contract
+          SewaAlatEscrow pada jaringan Sepolia.
+        </p>
+      </header>
+
+      <section class="panel">
+        <h2>1. Koneksi Dompet</h2>
+        <button id="connectBtn">Hubungkan MetaMask</button>
+        <p><strong>Akun:</strong> <span id="account">Belum terhubung</span></p>
+        <p><strong>Jaringan:</strong> <span id="network">-</span></p>
+      </section>
+
+      <section class="panel">
+        <h2>2. Data Smart Contract (SewaAlatEscrow)</h2>
+        <button id="refreshBtn">Muat Ulang Data</button>
+        <dl>
+          <div>
+            <dt>Pemilik Rental</dt>
+            <dd id="pemilik">-</dd>
+          </div>
+          <div>
+            <dt>Jumlah Alat</dt>
+            <dd id="jumlahAlat">-</dd>
+          </div>
+          <div>
+            <dt>Saldo Escrow</dt>
+            <dd id="saldoEscrow">-</dd>
+          </div>
+        </dl>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nama Alat</th>
+                <th>Biaya Sewa</th>
+                <th>Uang Jaminan</th>
+                <th>Status</th>
+                <th>Penyewa Aktif</th>
+              </tr>
+            </thead>
+            <tbody id="daftarAlatBody">
+              <tr>
+                <td colspan="6">Belum ada data yang dimuat.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>3. Tambah Unit Alat (Transaksi Pemilik)</h2>
+        <form id="formTambah">
+          <label for="namaAlat">Nama Alat</label>
+          <input
+            id="namaAlat"
+            type="text"
+            placeholder="Contoh: Kamera Sony"
+            required
+          />
+
+          <label for="biayaEther"
+            >Biaya Sewa (bilangan bulat minimal 1 ETH)</label
+          >
+          <input
+            id="biayaEther"
+            type="number"
+            min="1"
+            max="100"
+            step="1"
+            required
+          />
+
+          <label for="jaminanEther"
+            >Uang Jaminan / Deposit (bilangan bulat minimal 1 ETH)</label
+          >
+          <input
+            id="jaminanEther"
+            type="number"
+            min="1"
+            max="100"
+            step="1"
+            required
+          />
+
+          <button id="addBtn" type="submit">Kirim Transaksi Tambah Alat</button>
+        </form>
+        <p class="note">
+          Kontrak menegakkan modifier hanyaPemilik dan require(biayaEther > 0 &&
+          jaminanEther > 0) secara on-chain.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>4. Transaksi Escrow: Sewa & Konfirmasi Kembali</h2>
+        <form id="formEscrow">
+          <label for="idAlatEscrow">ID Alat (Indeks Tabel)</label>
+          <input
+            id="idAlatEscrow"
+            type="number"
+            min="0"
+            step="1"
+            placeholder="0"
+            required
+          />
+          <div class="btn-group">
+            <button id="rentBtn" type="button">
+              Sewa Alat (Kirim ETH Deposit)
+            </button>
+            <button id="returnBtn" type="button" class="secondary">
+              Konfirmasi Kembali (Pencairan Escrow)
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <p id="status" class="status" role="status" aria-live="polite">
+        Isi alamat kontrak pada config.js sebelum mencoba.
+      </p>
+    </main>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
